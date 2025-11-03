@@ -8,13 +8,13 @@
 
 using namespace std;
 
-int main(int argc, char *argv[]) {
-
-    //Test Parser
-    /*
+void testParser() {
     vector<Movie> movies = movieParser("data/title.basics.tsv");
-
     cout << "Size of movie vector: " << endl;
     cout << movies.size() << endl;
-    */
+}
+
+
+int main(int argc, char *argv[]) {
+    testParser();
 }
