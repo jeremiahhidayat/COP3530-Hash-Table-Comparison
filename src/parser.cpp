@@ -5,11 +5,17 @@
 #include "parser.h"
 #include <fstream>
 #include <sstream>
+#include <iostream>
 using namespace std;
 
-vector<Movie> parserMovies(const string &filename) {
+vector<Movie> movieParser(const string &filename) {
     vector<Movie> movies;
     ifstream file(filename);
+
+    if (!file.is_open()) {
+        cerr << "Error: Cannot open file " << filename << endl;
+        return {};
+    }
     string line;
     getline(file, line);
 
@@ -31,7 +37,7 @@ vector<Movie> parserMovies(const string &filename) {
         std::getline(ss, token, '\t'); // endYear (skip)
         std::getline(ss, token, '\t'); // runtimeMinutes
 
-        std::getline(ss, movie.genres, '\t');
+        std::getline(ss, movie.genres);
 
         movies.push_back(movie);
     }
