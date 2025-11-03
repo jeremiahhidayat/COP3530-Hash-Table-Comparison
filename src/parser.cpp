@@ -8,6 +8,7 @@
 #include <iostream>
 using namespace std;
 
+//Make sure that the workspace is set right: Run > Edit Configurations > Working Directory > set to your project root.
 vector<Movie> movieParser(const string &filename) {
     vector<Movie> movies;
     ifstream file(filename);
