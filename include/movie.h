@@ -6,19 +6,17 @@
 #define PROJECT_2_MOVIE_H
 
 #include <string>
-using namespace std;
 
-
-// will be hashing on tconst for easy hashing
+// Note: hash key is the Movie.id (tconst)
 struct Movie{
-    string id;
-    string title;
-    int year{};
-    string genres;
+    std::string id;
+    std::string title;
+    int year = -1;
+    std::string genres = "Unknown";
 
     Movie() = default;
 
-    Movie(const string& id, const string& title, const int year,const string& genres)
+    Movie(const std::string& id, const std::string& title, const int year,const std::string& genres)
     : id(id), title(title), year(year), genres(genres) {}
 };
 

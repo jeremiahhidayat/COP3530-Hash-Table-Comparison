@@ -5,9 +5,10 @@
 #ifndef PROJECT_2_PARSER_H
 #define PROJECT_2_PARSER_H
 
+#include <vector>
+#include <string>
+#include "movie.h"
 
-class parser {
-};
-
+std::vector<Movie> movieParser(const std::string& filename);
 
 #endif //PROJECT_2_PARSER_H
