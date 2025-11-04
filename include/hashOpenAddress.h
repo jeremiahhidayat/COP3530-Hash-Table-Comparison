@@ -10,12 +10,12 @@
 #define COP3530_HASH_TABLE_COMPARISON_HASHTABLE_H
 
 template <typename keyType, typename valueType>
-class HashTable : public hashTable<keyType, valueType>{
+class hashOpenAddress : public hashTable<keyType, valueType>{
     using Base = hashTable<keyType, valueType>;
     using keyValuePair = std::pair<keyType, valueType>;
 
 public:
-    HashTable(size_t initCapacity = 10, float loadFactor = 0.75f)
+    hashOpenAddress(size_t initCapacity = 10, float loadFactor = 0.75f)
     :Base(initCapacity, loadFactor), table(initCapacity, std::nullopt) {}
 
     void insert(const keyType& key, const valueType& value) override {
