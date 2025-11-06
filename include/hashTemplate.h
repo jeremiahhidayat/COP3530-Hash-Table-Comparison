@@ -8,7 +8,6 @@
 #include <vector>
 #include <list>
 #include <functional>
-#include <optional>
 #include <stdexcept>
 #include <iostream>
 
@@ -40,49 +39,20 @@ protected:
     size_t elements;
 
     // change the hashing function here
-    size_t hash(const keyType& key) const {
-        return std::hash<keyType>{}(key) % capacity;
+    size_t hash(const keyType& key) const requires std::same_as<keyType, std::string>{
+        unsigned int sum = 0;
+        for (int i = 0; i < 100; i++) {
+            if (i == key.size() - 1) {
+                break;
+            }
+            sum += key[i];
+        }
+        return sum % capacity;
     }
 
     //needed for open addressing
     virtual void rehash(size_t new_capacity) = 0;
 
-};
-template <typename keyType, typename valueType>
-class hashTableSC : public hashTable<keyType, valueType> {
-  private:
-    std::list<valueType>* arr;
-  public:
-    using hashTable<keyType, valueType>::capacity;
-    using hashTable<keyType, valueType>::keyValuePair;
-    explicit hashTableSC()
-       : hashTable<keyType, valueType>()  // ✅ initialize base class
-   {
-        arr = new std::list<typename hashTable<keyType, valueType>::keyValuePair>[capacity];
-   }
-    ~hashTableSC() override {
-        delete[] arr;
-    }
-    void insert(const keyType& key, const valueType& value) override {
-        arr[hash(key)].push_back(std::make_pair(key, value));
-    }
-    bool remove(const keyType& key) override {
-        auto before = arr[hash(key)].size();
-        arr[hash(key)].remove_if([key](const std::pair<keyType, valueType>& p) {
-        return p.first == key;
-        });
-        auto after = arr[hash(key)].size();
-        if (after < before)
-            return true;
-        return false;
-    }
-    valueType search(const keyType& key) const override {
-        auto it = std::find_if(arr[hash(key)].begin(), arr[hash(key)].end(),
-                           [key](const std::pair<int, std::string>& p) {
-                               return p.first == key;
-                           });
-        return it->second;
-    }
 };
 
 #endif //PROJECT_2_HASHTEMPLATE_H
