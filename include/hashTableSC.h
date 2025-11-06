@@ -4,12 +4,15 @@
 #ifndef HASHTABLESC_H
 #define HASHTABLESC_H
 #include "hashTemplate.h"
+#include <utility>
+using namespace std;
 template <typename keyType, typename valueType>
 class hashTableSC : public hashTable<keyType, valueType> {
 private:
-    std::list<valueType>* arr;
+    std::list<typename hashTableSC::keyValuepPair>* arr;
 public:
     using hashTable<keyType, valueType>::capacity;
+    using hashTable<keyType, valueType>::size;
     using hashTable<keyType, valueType>::keyValuePair;
     explicit hashTableSC()
        : hashTable<keyType, valueType>()
@@ -21,6 +24,19 @@ public:
     }
     void insert(const keyType& key, const valueType& value) override {
         arr[hash(key)].push_back(std::make_pair(key, value));
+        ++size;
+        if(size / capacity >= 0.75) {
+            capacity *= 2;
+            auto* new_arr = new std::list<typename hashTableSC::keyValuepPair>[capacity];
+            for (int i = 0; i < static_cast<int>(capacity / 2); i++) {
+                auto it = arr[i].begin();
+                while (it != arr[i].end()) {
+                    new_arr[hash(it->first)].push_back(make_pair(it->first, it->second));
+                }
+            }
+            delete[] arr;
+            arr = new_arr;
+        }
     }
     bool remove(const keyType& key) override {
         auto before = arr[hash(key)].size();
