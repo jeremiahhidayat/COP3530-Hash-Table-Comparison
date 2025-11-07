@@ -2,12 +2,13 @@
 // Created by jerem on 11/2/2025.
 //
 #include <iostream>
-//#include <movie.h>
+#include "movie.h"
 #include <ostream>
 #include <limits>
 #include <sstream>
 #include "CLI.h"
-//#include <parser.h>
+#include "parser.h"
+#include "hashOpenAddress.h"
 
 using namespace std;
 
