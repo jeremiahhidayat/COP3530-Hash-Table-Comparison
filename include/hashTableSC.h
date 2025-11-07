@@ -9,7 +9,7 @@ using namespace std;
 template <typename keyType, typename valueType>
 class hashTableSC : public hashTable<keyType, valueType> {
 private:
-    std::list<typename hashTableSC::keyValuepPair>* arr;
+    std::list<typename hashTableSC::keyValuePair>* arr;
 public:
     using hashTable<keyType, valueType>::capacity;
     using hashTable<keyType, valueType>::size;

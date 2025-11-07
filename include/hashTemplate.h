@@ -10,6 +10,7 @@
 #include <functional>
 #include <stdexcept>
 #include <iostream>
+#include <concepts>
 
 template <typename keyType, typename valueType>
 class hashTable {
