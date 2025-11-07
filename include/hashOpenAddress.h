@@ -1,73 +1,95 @@
-//
-// Created by kaide on 11/3/2025.
-//
-
-#include "hashTemplate.h"
-#include <iostream>
-#include <cmath>
-#include <optional>
-
 #ifndef COP3530_HASH_TABLE_COMPARISON_HASHTABLE_H
 #define COP3530_HASH_TABLE_COMPARISON_HASHTABLE_H
 
-template <typename keyType, typename valueType>
-class hashOpenAddress : public hashTable<keyType, valueType>{
-    using Base = hashTable<keyType, valueType>;
-    using keyValuePair = std::pair<keyType, valueType>;
+#include <iostream>
+#include <vector>
+#include <utility>
+#include <string>
+#include <stdexcept>
 
+class hashOpenAddress {
 public:
-    hashOpenAddress(size_t initCapacity = 10, float loadFactor = 0.75f)
-    :Base(initCapacity, loadFactor), table(initCapacity, std::nullopt) {}
+    using keyValuePair = std::pair<std::string, std::string>;
 
-    void insert(const keyType& key, const valueType& value) override {
-        if (this->getLoadFactor() >= this->loadFactor) {
-            rehash(this->capacity * 2);
+    hashOpenAddress(size_t initCapacity = 10, float loadFactor = 0.75f)
+            : capacity(initCapacity), loadFactor(loadFactor),
+              table(initCapacity, nullptr), elements(0) {}
+
+    ~hashOpenAddress() {
+        for (auto ptr : table) {
+            delete ptr;
         }
-        size_t index = this->hash(key);
-        while (table[index].has_value() && table[index]->first != key) {
-            index = (index+1) % this->capacity;
-        }
-        if (table[index].has_value()) {
-            this->elements++;
-        }
-        table[index].keyValuePair(key, value);
     }
 
-    valueType search(const keyType& key) const override {
-        size_t index = this->hash(key);
+    void insert(const std::string& key, const std::string& value) {
+        if (getLoadFactor() >= loadFactor) {
+            rehash(capacity * 2);
+        }
+
+        size_t index = hash(key) % capacity;
+
+        // Linear probing
+        while (table[index] != nullptr && table[index]->first != key) {
+            index = (index + 1) % capacity;
+        }
+
+        if (table[index] == nullptr) {
+            elements++; // new element
+            table[index] = new keyValuePair(key, value);
+        } else {
+            table[index]->second = value; // update existing
+        }
+    }
+
+    std::string search(const std::string& key) const {
+        size_t index = hash(key) % capacity;
         size_t start = index;
 
-        while (table[index].has_value()) {
+        while (table[index] != nullptr) {
             if (table[index]->first == key) {
                 return table[index]->second;
             }
+            index = (index + 1) % capacity;
+            if (index == start) break; // searched whole table
         }
+
         throw std::runtime_error("Key not found in table");
     }
 
+    float getLoadFactor() const {
+        return static_cast<float>(elements) / static_cast<float>(capacity);
+    }
+
     float memoryUtilization() const {
-        return static_cast<float>(this->elements) / static_cast<float>(this->capacity);
+        return getLoadFactor();
     }
 
 protected:
-    // make/do hash table here
-    void rehash(size_t new_capacity) override {
-        std::vector<std::optional<keyValuePair>> old = table;
+    size_t hash(const std::string& key) const {
+        std::hash<std::string> hasher;
+        return hasher(key);
+    }
 
-        this->capacity = new_capacity;
-        table = std::vector<std::optional<keyValuePair>>(new_capacity, std::nullopt);
-        this->elements = 0;
+    void rehash(size_t new_capacity) {
+        std::vector<keyValuePair*> oldTable = table;
 
-        for (auto &slot : old) {
-            if (slot.has_value() && slot != tombstone) {
-                insert(slot->first, slot->second);
+        capacity = new_capacity;
+        table = std::vector<keyValuePair*>(new_capacity, nullptr);
+        elements = 0;
+
+        for (auto ptr : oldTable) {
+            if (ptr != nullptr) {
+                insert(ptr->first, ptr->second);
+                delete ptr; // delete old pointer
             }
         }
     }
 
 private:
-    std::vector<std::optional<keyValuePair>> table;
-    const std::optional<keyValuePair> tombstone = std::make_optional(keyValuePair(keyType{}, valueType{}));
+    std::vector<keyValuePair*> table;
+    size_t capacity;
+    size_t elements;
+    float loadFactor;
 };
 
-#endif //COP3530_HASH_TABLE_COMPARISON_HASHTABLE_H
+#endif // COP3530_HASH_TABLE_COMPARISON_HASHTABLE_H
