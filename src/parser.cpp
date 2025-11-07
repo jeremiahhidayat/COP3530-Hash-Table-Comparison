@@ -37,6 +37,7 @@ vector<Movie> movieParser(const string &filename) {
 
         std::getline(ss, token, '\t'); // endYear (skip)
         std::getline(ss, token, '\t'); // runtimeMinutes
+        movie.runtime = (token != "\\N") ? std::stoi(token) : -1;
 
         std::getline(ss, movie.genres);
 
