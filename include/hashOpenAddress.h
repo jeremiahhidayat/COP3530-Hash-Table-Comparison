@@ -5,6 +5,7 @@
 #include "hashTemplate.h"
 #include <iostream>
 #include <cmath>
+#include <optional>
 
 #ifndef COP3530_HASH_TABLE_COMPARISON_HASHTABLE_H
 #define COP3530_HASH_TABLE_COMPARISON_HASHTABLE_H
