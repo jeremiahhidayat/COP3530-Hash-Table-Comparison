@@ -59,7 +59,7 @@ void interactiveSession(T& table) {
                 cout << "Enter key: ";
                 cin >> key;
 
-                cout << "Found: " << table.search(key) << "\n";
+                // cout << "Found: " << table.search(key) << "\n";
                 break;
             case 4:
                 if (allFlag) {
@@ -78,11 +78,11 @@ void interactiveSession(T& table) {
 
 void runCLI(TableType type) {
     if (type == TableType::SEPARATE_CHAIN) {
-        hashTableSC<string, Movie> table;
+        hashTableSC<string, string> table;
         cout << "\nUsing Separate Chaining Hash Table\n";
         interactiveSession(table);
     } else {
-        hashOpenAddress<string, Movie> table;
+        hashOpenAddress<string, string> table;
         cout << "\nUsing Open Addressing Hash Table\n";
         interactiveSession(table);
     }
