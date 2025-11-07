@@ -49,11 +49,17 @@ public:
         return false;
     }
     valueType search(const keyType& key) const override {
-        auto it = std::find_if(arr[hash(key)].begin(), arr[hash(key)].end(),
-                           [key](const std::pair<int, std::string>& p) {
-                               return p.first == key;
-                           });
-        return it->second;
+        auto& bucket = arr[hash(key)];
+        auto it = std::find_if(bucket.begin(), bucket.end(),
+                               [key](const std::pair<int, std::string>& p) {
+                                   return p.first == key;
+                               });
+
+        if (it != bucket.end()) {
+            return it->second;
+        } else {
+            throw std::runtime_error("Key not found in table");
+        }
     }
 };
 #endif //HASHTABLESC_H
