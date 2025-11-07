@@ -9,7 +9,7 @@
 using namespace std;
 
 //Make sure that the workspace is set right: Run > Edit Configurations > Working Directory > set to your project root.
-vector<Movie> movieParser(const string &filename) {
+vector<Movie> movieParser(const string &filename, int amount) {
     vector<Movie> movies;
     ifstream file(filename);
 
@@ -37,10 +37,13 @@ vector<Movie> movieParser(const string &filename) {
 
         std::getline(ss, token, '\t'); // endYear (skip)
         std::getline(ss, token, '\t'); // runtimeMinutes
+        movie.runtime = (token != "\\N") ? std::stoi(token) : -1;
 
         std::getline(ss, movie.genres);
 
         movies.push_back(movie);
+
+        if (amount != -1 && movies.size() == amount) return movies;
     }
 
     return movies;
