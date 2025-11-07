@@ -9,6 +9,6 @@
 #include <string>
 #include "movie.h"
 
-std::vector<Movie> movieParser(const std::string& filename);
+std::vector<Movie> movieParser(const std::string& filename, int amount);
 
 #endif //PROJECT_2_PARSER_H
