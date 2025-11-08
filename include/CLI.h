@@ -4,8 +4,16 @@
 
 #include "hashOpenAddress.h"
 #include "hashTemplate.h"
-#include <string>
+#include <iostream>
 #include "movie.h"
+#include <iostream>
+#include <vector>
+#include <string>
+#include <regex>
+#include <limits>
+#include <chrono>
+#include <random>
+#include <algorithm>
 
 #ifndef CLI_H
 #define CLI_H
@@ -18,7 +26,7 @@ enum class TableType {
 void showMainMenu();
 void showSubMenu();
 template <typename T>
-void interactiveSession();
+void interactiveSession(T& table);
 void runCLI(TableType type);
 void compareImplementations();
 

@@ -43,6 +43,7 @@ vector<Movie> movieParser(const string &filename, int amount) {
 
         movies.push_back(movie);
 
+        if (amount == 0) return {};
         if (amount != -1 && movies.size() == amount) return movies;
     }
 
