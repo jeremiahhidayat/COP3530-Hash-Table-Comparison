@@ -16,7 +16,7 @@ private:
     std::list<keyValuePair>* arr;
     size_t capacity;
     size_t size;
-    [[nodiscard]] size_t hash(const string& key) const {
+    size_t hash(const string& key) const {
         unsigned int sum = 0;
         for (int i = 0; i < 100; i++) {
             if (i == key.size() - 1) {
@@ -66,7 +66,7 @@ public:
 
     string search(const string& key) const {
         auto& bucket = arr[hash(key)];
-        const auto it = ranges::find_if(bucket,
+        const auto it = std::find_if(bucket.begin(), bucket.end(),
                                         [key](const std::pair<string, std::string>& p) {
                                             return p.first == key;
                                         });
