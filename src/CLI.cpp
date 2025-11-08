@@ -10,7 +10,6 @@ using namespace std;
 
 void showMainMenu() {
     cout << "\n --- IMDb Movie Hash Table Benchmark ---" << endl;
-    // cout << "    0. Show Help" << endl;
     cout << "    1. Use Separate Chaining Hash Table" << endl;
     cout << "    2. Use Open Addressing Hash Table" << endl;
     cout << "    3. Compare Performance"            <<endl;
@@ -23,107 +22,129 @@ void showSubMenu() {
     cout << "    2. Search for a Movie Title" << endl;
     cout << "    3. Delete a Record" << endl;
     cout << "    4. Go Back to Main Menu " << endl;
-    cout << "\n Enter Choice: ";
+    cout << "\nEnter Choice: ";
 }
-#include <iostream>
-#include <vector>
-#include <string>
-#include <regex>
-#include <limits>
 
 template <typename T>
 void interactiveSession(T& table) {
     bool allFlag = false;
-    std::string key;
+    string key;
     int choice = 0;
 
-    // Regex to match integers (optional negative sign)
-    std::regex intRegex(R"(^-?\d+$)");
+    // Regex to match integers
+    regex intRegex(R"(^-?\d+$)");
 
     do {
         showSubMenu();
 
-        // --- Read menu choice ---
-        std::string choiceStr;
-        std::getline(std::cin, choiceStr);
+        string choiceStr;
+        getline(cin, choiceStr);
+        choiceStr.erase(remove(choiceStr.begin(), choiceStr.end(), '\r'), choiceStr.end());
 
-        // Remove carriage return (\r) if present (Windows)
-        choiceStr.erase(std::remove(choiceStr.begin(), choiceStr.end(), '\r'), choiceStr.end());
-
-        if (!std::regex_match(choiceStr, intRegex)) {
-            std::cout << "Invalid input. Please enter a number.\n";
+        if (!regex_match(choiceStr, intRegex)) {
+            cout << "Invalid input. Please enter a number.\n";
             continue;
         }
 
-        choice = std::stoi(choiceStr);
+        choice = stoi(choiceStr);
 
         switch (choice) {
             // --- Load dataset ---
             case 1: {
                 int amount = 0;
-                allFlag = false;
+                bool printFlag = false;
 
-                std::cout << "Enter number of IMDb entries (-1 for all): ";
-
+                cout << "Enter number of IMDb entries (-1 for all) \nnote: does not print more than 50 \nentry: ";
                 while (true) {
-                    std::string amountStr;
-                    std::getline(std::cin, amountStr);
+                    string amountStr;
+                    getline(cin, amountStr);
+                    amountStr.erase(remove(amountStr.begin(), amountStr.end(), '\r'), amountStr.end());
 
-                    // Remove \r if Windows
-                    amountStr.erase(std::remove(amountStr.begin(), amountStr.end(), '\r'), amountStr.end());
-
-                    if (std::regex_match(amountStr, intRegex)) {
-                        amount = std::stoi(amountStr);
+                    if (regex_match(amountStr, intRegex)) {
+                        amount = stoi(amountStr);
                         break;
                     } else {
-                        std::cout << "Invalid number. Try again: ";
+                        cout << "Invalid number. Try again: ";
                     }
                 }
 
-                allFlag = (amount == -1);
+                // if -1 -> false
+                // print if amount <= 50 is true
+                printFlag = (amount <= 50 && amount == -1 );
 
-                // parse movies and insert
-                std::vector<Movie> movies = movieParser("data/title.basics.tsv", amount);
+                vector<Movie> movies = movieParser("data/title.basics.tsv", amount);
+                int movieCount = 0;
+
+                auto start = chrono::high_resolution_clock::now(); // start timing
                 for (const auto& movie : movies) {
                     table.insert(movie.title, movie.genres);
-                    if (!allFlag)
-                        std::cout << "Inserted: " << movie.title << "\n";
+                    movieCount++;
+                    if (!printFlag)
+                        cout << "Inserted: " << movie.title << "\n";
                 }
+                auto end = chrono::high_resolution_clock::now();
+                chrono::duration<double> elapsed = end - start;
 
-                std::cout << "Insertion complete.\n";
+                cout << "Insertion of " << movieCount << " movies complete. Time taken: "
+                     << elapsed.count() << " seconds.\n";
                 break;
             }
 
             // --- Search for a movie ---
             case 2: {
-                std::cout << "Enter key: ";
-                std::getline(std::cin, key);
-                key.erase(std::remove(key.begin(), key.end(), '\r'), key.end()); // remove \r
-                std::cout << "Found: " << table.search(key) << "\n";
+                cout << "Enter key: ";
+                getline(cin, key);
+                key.erase(remove(key.begin(), key.end(), '\r'), key.end());
+
+                auto start = chrono::high_resolution_clock::now();
+                try {
+                    string result = table.search(key);
+                    auto end = chrono::high_resolution_clock::now();
+                    chrono::duration<double> elapsed = end - start;
+
+                    cout << key << "'s genres is/are: " << result << "\n";
+                    cout << "Search took: " << elapsed.count() << " seconds.\n";
+                } catch (const runtime_error& e) {
+                    auto end = chrono::high_resolution_clock::now();
+                    chrono::duration<double> elapsed = end - start;
+
+                    cout << e.what() << "\n";
+                    cout << "Search took: " << elapsed.count() << " seconds.\n";
+                }
                 break;
             }
 
-            // --- Print table ---
-            case 4: {
-                if (allFlag) {
-                    std::cout << "Are you sure you want to print every value of the IMDb database?\n";
-                }
+            // --- Remove a movie ---
+            case 3: {
+                cout << "Enter key to remove: ";
+                getline(cin, key);
+                key.erase(remove(key.begin(), key.end(), '\r'), key.end());
 
-                // table.print();
+                auto start = chrono::high_resolution_clock::now();
+                bool removed = table.remove(key);
+                auto end = chrono::high_resolution_clock::now();
+                chrono::duration<double> elapsed = end - start;
+
+                if (removed) {
+                    cout << "Removed \"" << key << "\" successfully.\n";
+                } else {
+                    cout << "Key \"" << key << "\" not found.\n";
+                }
+                cout << "Remove operation took: " << elapsed.count() << " seconds.\n";
                 break;
             }
 
             // --- Return to main menu ---
-            case 5: {
-                std::cout << "Returning to main menu.\n";
+            case 4: {
+                cout << "Returning to main menu.\n";
                 break;
             }
 
             default:
-                std::cout << "Invalid option. Please enter a valid choice.\n";
+                cout << "Invalid option. Please enter a valid choice.\n";
         }
 
-    } while (choice != 5);
+    } while (choice != 4);
 }
 
 
@@ -138,7 +159,6 @@ void runCLI(TableType type) {
         interactiveSession(table);
     }
 }
-
 
 void compareImplementations() {
 }

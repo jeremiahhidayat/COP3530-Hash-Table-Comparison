@@ -4,9 +4,14 @@
 
 #include "hashOpenAddress.h"
 #include "hashTemplate.h"
-#include <string>
 #include <iostream>
 #include "movie.h"
+#include <iostream>
+#include <vector>
+#include <string>
+#include <regex>
+#include <limits>
+#include <chrono>
 
 #ifndef CLI_H
 #define CLI_H
