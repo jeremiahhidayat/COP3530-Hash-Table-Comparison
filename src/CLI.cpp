@@ -22,67 +22,118 @@ void showSubMenu() {
     cout << "    1. Load IMDb Dataset and Insert into Hash Table" << endl;
     cout << "    2. Search for a Movie Title" << endl;
     cout << "    3. Delete a Record" << endl;
-    cout << "    4. Print Table" << endl;
-    cout << "    5. Go Back to Main Menu " << endl;
-    cout << "\n Enter Choice: " << endl;
+    cout << "    4. Go Back to Main Menu " << endl;
+    cout << "\n Enter Choice: ";
 }
+#include <iostream>
+#include <vector>
+#include <string>
+#include <regex>
+#include <limits>
 
 template <typename T>
 void interactiveSession(T& table) {
-    int choice ;
-    int amount;
     bool allFlag = false;
-    string key;
-    Movie output;
-    vector<Movie> movies;
+    std::string key;
+    int choice = 0;
+
+    // Regex to match integers (optional negative sign)
+    std::regex intRegex(R"(^-?\d+$)");
 
     do {
         showSubMenu();
-        cin >> choice ;
+
+        // --- Read menu choice ---
+        std::string choiceStr;
+        std::getline(std::cin, choiceStr);
+
+        // Remove carriage return (\r) if present (Windows)
+        choiceStr.erase(std::remove(choiceStr.begin(), choiceStr.end(), '\r'), choiceStr.end());
+
+        if (!std::regex_match(choiceStr, intRegex)) {
+            std::cout << "Invalid input. Please enter a number.\n";
+            continue;
+        }
+
+        choice = std::stoi(choiceStr);
+
         switch (choice) {
-            case 1:
-                cout << "Enter number of IMBb entries desired" << endl;
-                cout << "Put -1 for all values to be entered" << endl;
+            // --- Load dataset ---
+            case 1: {
+                int amount = 0;
+                allFlag = false;
 
-                cin >> amount;
-                if (amount == -1) allFlag = true;
-                else allFlag = false;
+                std::cout << "Enter number of IMDb entries (-1 for all): ";
 
-                movies = movieParser("data/title.basics.tsv", amount);
-                for (auto movie : movies) {
-                    table.insert(movie.title,movie);
-                    cout << movie.title << endl;
+                while (true) {
+                    std::string amountStr;
+                    std::getline(std::cin, amountStr);
+
+                    // Remove \r if Windows
+                    amountStr.erase(std::remove(amountStr.begin(), amountStr.end(), '\r'), amountStr.end());
+
+                    if (std::regex_match(amountStr, intRegex)) {
+                        amount = std::stoi(amountStr);
+                        break;
+                    } else {
+                        std::cout << "Invalid number. Try again: ";
+                    }
                 }
 
-                break;
-            case 2:
-                cout << "Enter key: ";
-                cin >> key;
+                allFlag = (amount == -1);
 
-                // cout << "Found: " << table.search(key) << "\n";
+                // parse movies and insert
+                std::vector<Movie> movies = movieParser("data/title.basics.tsv", amount);
+                for (const auto& movie : movies) {
+                    table.insert(movie.title, movie.genres);
+                    if (!allFlag)
+                        std::cout << "Inserted: " << movie.title << "\n";
+                }
+
+                std::cout << "Insertion complete.\n";
                 break;
-            case 4:
+            }
+
+            // --- Search for a movie ---
+            case 2: {
+                std::cout << "Enter key: ";
+                std::getline(std::cin, key);
+                key.erase(std::remove(key.begin(), key.end(), '\r'), key.end()); // remove \r
+                std::cout << "Found: " << table.search(key) << "\n";
+                break;
+            }
+
+            // --- Print table ---
+            case 4: {
                 if (allFlag) {
-                    cout<< "Are you sure you want to print every value of the IMDb database?" << endl;
+                    std::cout << "Are you sure you want to print every value of the IMDb database?\n";
                 }
 
                 // table.print();
-            case 5:
-                cout<< "returning to main menu" << endl;
                 break;
+            }
+
+            // --- Return to main menu ---
+            case 5: {
+                std::cout << "Returning to main menu.\n";
+                break;
+            }
+
             default:
-                cout << "Invalid option.\n";
+                std::cout << "Invalid option. Please enter a valid choice.\n";
         }
-    }while (choice != 5);
+
+    } while (choice != 5);
 }
+
 
 void runCLI(TableType type) {
     if (type == TableType::SEPARATE_CHAIN) {
-        hashTableSC<string, string> table;
+        hashTableSC table;
         cout << "\nUsing Separate Chaining Hash Table\n";
         interactiveSession(table);
     } else {
-        hashOpenAddress<string, string> table;
+        hashOpenAddress table;
         cout << "\nUsing Open Addressing Hash Table\n";
         interactiveSession(table);
     }
