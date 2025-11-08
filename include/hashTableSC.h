@@ -63,7 +63,8 @@ public:
             return true;
         return false;
     }
-    [[nodiscard]] string search(const string& key) const {
+
+    string search(const string& key) const {
         auto& bucket = arr[hash(key)];
         const auto it = ranges::find_if(bucket,
                                         [key](const std::pair<string, std::string>& p) {
