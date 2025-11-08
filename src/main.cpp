@@ -10,10 +10,10 @@
 #include <regex>
 #include <algorithm>
 
-#include "CLI.h"
-#include "parser.h"
-#include "hashOpenAddress.h"
-#include "hashSeparateAddress.h"
+#include "../include/CLI.h"
+#include "../include/parser.h"
+#include "../include/hashOpenAddress.h"
+#include "../include/hashSeparateAddress.h"
 
 using namespace std;
 
