@@ -12,6 +12,8 @@
 #include <regex>
 #include <limits>
 #include <chrono>
+#include <random>
+#include <algorithm>
 
 #ifndef CLI_H
 #define CLI_H
