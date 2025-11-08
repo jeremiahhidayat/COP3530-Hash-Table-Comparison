@@ -3,9 +3,8 @@
 //
 
 #include "../include/CLI.h"
-
 #include "../include/hashTableSC.h"
-#include "parser.h"
+#include "../include/parser.h"
 using namespace std;
 
 void showMainMenu() {
