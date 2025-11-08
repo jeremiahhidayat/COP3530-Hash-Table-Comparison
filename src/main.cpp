@@ -2,12 +2,9 @@
 // Created by jerem on 11/2/2025.
 //
 #include <iostream>
-#include "movie.h"
 #include <ostream>
 #include <limits>
 #include <sstream>
-#include <bits/fs_fwd.h>
-#include <bits/fs_path.h>
 
 #include <string>
 #include <regex>
