@@ -4,7 +4,7 @@
 
 #include "../include/CLI.h"
 
-#include "hashTableSC.h"
+#include "hashSeparateAddress.h"
 #include "parser.h"
 using namespace std;
 
@@ -150,7 +150,7 @@ void interactiveSession(T& table) {
 
 void runCLI(TableType type) {
     if (type == TableType::SEPARATE_CHAIN) {
-        hashTableSC table;
+        hashSeparateAddress table;
         cout << "\nUsing Separate Chaining Hash Table\n";
         interactiveSession(table);
     } else {
@@ -211,7 +211,7 @@ void compareImplementations() {
     vector<int> searchIndices(indices.begin(), indices.begin() + searchCount);
 
     // --- Separate Chaining ---
-    hashTableSC scTable;
+    hashSeparateAddress scTable;
     auto start = high_resolution_clock::now();
     for (const auto& movie : movies) scTable.insert(movie.title, movie.genres);
     auto end = high_resolution_clock::now();

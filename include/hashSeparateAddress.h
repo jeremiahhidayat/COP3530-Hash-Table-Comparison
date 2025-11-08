@@ -10,7 +10,7 @@
 #include <stdexcept>
 #include <string>
 using namespace std;
-class hashTableSC {
+class hashSeparateAddress {
     using keyValuePair = pair<string, string>;
 private:
     std::list<keyValuePair>* arr;
@@ -27,12 +27,12 @@ private:
         return sum % capacity;
     }
 public:
-    hashTableSC() {
+    hashSeparateAddress() {
         capacity = 10;
         size = 0;
         arr = new std::list<keyValuePair>[capacity];
     }
-    ~hashTableSC() {
+    ~hashSeparateAddress() {
         delete[] arr;
     }
 

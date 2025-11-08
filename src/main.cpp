@@ -16,7 +16,7 @@
 #include "CLI.h"
 #include "parser.h"
 #include "hashOpenAddress.h"
-#include "hashTableSC.h"
+#include "hashSeparateAddress.h"
 
 using namespace std;
 
