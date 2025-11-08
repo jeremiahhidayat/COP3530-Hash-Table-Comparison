@@ -35,15 +35,16 @@ public:
     ~hashTableSC() {
         delete[] arr;
     }
+
     void insert(const string& key, const string& value)  {
         arr[hash(key)].emplace_back(key, value);
         ++size;
-        if(size / capacity >= 0.75) {
+
+        if (static_cast<double>(size) / capacity >= 0.75) {
             capacity *= 2;
             auto* new_arr = new std::list<keyValuePair>[capacity];
-            for (int i = 0; i < static_cast<int>(capacity / 2); i++) {
-                auto it = arr[i].begin();
-                while (it != arr[i].end()) {
+            for (size_t i = 0; i < capacity / 2; i++) {
+                for (auto it = arr[i].begin(); it != arr[i].end(); ++it) { // increment!
                     new_arr[hash(it->first)].emplace_back(it->first, it->second);
                 }
             }
@@ -51,6 +52,7 @@ public:
             arr = new_arr;
         }
     }
+
     bool remove(const string& key)  {
         const auto before = arr[hash(key)].size();
         arr[hash(key)].remove_if([key](const keyValuePair& p) {
