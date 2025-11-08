@@ -2,6 +2,9 @@
 // Created by jerem on 11/5/2025.
 //
 
+#ifndef CLI_H
+#define CLI_H
+
 #include "hashOpenAddress.h"
 #include <iostream>
 #include "movie.h"
@@ -13,9 +16,6 @@
 #include <chrono>
 #include <random>
 #include <algorithm>
-
-#ifndef CLI_H
-#define CLI_H
 
 enum class TableType {
     SEPARATE_CHAIN,

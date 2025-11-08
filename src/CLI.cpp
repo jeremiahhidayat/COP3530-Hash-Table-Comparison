@@ -2,8 +2,7 @@
 // Created by jerem on 11/5/2025.
 //
 
-#include "../include/CLI.h"
-
+#include "CLI.h"
 #include "hashSeparateAddress.h"
 #include "parser.h"
 using namespace std;
