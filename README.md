@@ -1,18 +1,26 @@
-# COP3530 - Project 2: Comparing Hash Tables
+# COP3530 - Project 2: Comparing Hash Tables with IMDb
 By Kaiden Bartrum, Liam Gale, and Jeremiah Hidayat
 
-# Development Documentation
-## Movie Struct
-Movie structs that hold the alphanumeric id, the title, the year created, and the list of genres. This is the data being 
-inputted into the Hash table. 
+A C++ project that benchmarks two different hash table implementations — **Separate Chaining** and **Open Addressing** — using IMDb movie data.  
+Built as part of a data structures and algorithms coursework project.
 
-## Parser Documentation
-The parser reads all the datapoints from the IMDB title TSV and returns a vector of movie structs. 
+## Features
 
-## Hash Table Template 
-This is the template that you should edit to implement the different hash tables. I made a template to ensure the 
-implementations are similar in functionality and function calling to make the rest of the implementation streamlined.
+- Compare performance between:
+    - **Separate Chaining Hash Table**
+    - **Open Addressing Hash Table**
+- Support for:
+    - Insertion of IMDb movie records (Key:value = Title:Genres)
+    - Search and removal operations
+    - Load factor tracking
+    - Automatic rehashing and resizing
+- CLI-based interaction
 
-How I set it up is that there is an abstract base class in the [hashTemplate](./include/hashTemplate.h) file.
+## Setup 
 
-see the [mock hash table](./include/mockHash.h) for the syntax and an example implementation of the template. 
+To get the database file for IMDb, visit this [link](https://datasets.imdbws.com/title.basics.tsv.gz).
+Extract the file and put the `title.basics.tsv` file in the [data directory](data).
+
+Make sure that the default workspace is set correctly for the makefile to read this file: 
+
+in Clion: Run > Edit Configurations > Working Directory > set to your project root.
