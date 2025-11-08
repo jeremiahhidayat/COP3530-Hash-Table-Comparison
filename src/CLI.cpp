@@ -4,7 +4,7 @@
 
 #include "../include/CLI.h"
 
-#include "hashTableSC.h"
+#include "../include/hashTableSC.h"
 #include "parser.h"
 using namespace std;
 
