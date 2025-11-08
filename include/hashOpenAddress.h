@@ -56,6 +56,36 @@ public:
         throw std::runtime_error("Key not found in table");
     }
 
+    bool remove(const std::string& key) {
+        size_t index = hash(key) % capacity;
+        size_t start = index;
+
+        while (table[index] != nullptr) {
+            if (table[index]->first == key) {
+                delete table[index];
+                table[index] = nullptr;
+                elements--;
+
+                size_t nextIndex = (index + 1) % capacity;
+                while (table[nextIndex] != nullptr) {
+                    keyValuePair* temp = table[nextIndex];
+                    table[nextIndex] = nullptr;
+                    elements--;
+                    insert(temp->first, temp->second);
+                    delete temp;
+                    nextIndex = (nextIndex + 1) % capacity;
+                }
+
+                return true;
+            }
+            index = (index + 1) % capacity;
+            if (index == start) break;
+        }
+
+        return false;
+    }
+
+
     float getLoadFactor() const {
         return static_cast<float>(elements) / static_cast<float>(capacity);
     }
