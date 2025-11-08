@@ -20,15 +20,6 @@
 
 using namespace std;
 
-void testParser() {
-    std::cout << "Current working directory: "
-              << std::filesystem::current_path() << std::endl;
-    vector<Movie> movies = movieParser("data/title.basics.tsv",10);
-    cout << "Size of movie vector: " << endl;
-    cout << movies.size() << endl;
-}
-
-
 int main() {
     int choice = 0;
     std::regex intRegex(R"(^\d+$)"); // only positive integers for menu
@@ -71,35 +62,3 @@ int main() {
 
     return 0;
 }
-
-// int main() {
-//     try {
-//         hashTableSC table;
-//
-//         table.insert("apple", "red");
-//         table.insert("banana", "yellow");
-//         table.insert("grape", "purple");
-//
-//         std::cout << "apple: " << table.search("apple") << std::endl;
-//         std::cout << "banana: " << table.search("banana") << std::endl;
-//
-//         table.insert("apple", "green");
-//         std::cout << "apple (updated): " << table.search("apple") << std::endl;
-//
-//         table.insert("orange", "orange");
-//         table.insert("lemon", "yellow");
-//         table.insert("lime", "green");
-//
-//         std::cout << "After rehash:" << std::endl;
-//         std::cout << "grape: " << table.search("grape") << std::endl;
-//         std::cout << "lime: " << table.search("lime") << std::endl;
-//
-//         // std::cout << "Load Factor: " << table.getLoadFactor() << std::endl;
-//         // std::cout << "Memory Utilization: " << table.memoryUtilization() << std::endl;
-//
-//         std::cout << table.search("pear") << std::endl;
-//     } catch (const std::exception& e) {
-//         std::cout << "Exception: " << e.what() << std::endl;
-//     }
-//     return 0;
-// }
