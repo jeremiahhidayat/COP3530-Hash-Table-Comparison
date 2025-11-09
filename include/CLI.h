@@ -3,7 +3,6 @@
 //
 
 #include "hashOpenAddress.h"
-#include "hashTemplate.h"
 #include <iostream>
 #include "movie.h"
 #include <iostream>

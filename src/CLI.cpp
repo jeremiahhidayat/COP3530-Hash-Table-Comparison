@@ -79,7 +79,7 @@ void interactiveSession(T& table) {
                 for (const auto& movie : movies) {
                     table.insert(movie.title, movie.genres);
                     movieCount++;
-                    if (!printFlag)
+                    if (printFlag)
                         cout << "Inserted: " << movie.title << "\n";
                 }
                 auto end = chrono::high_resolution_clock::now();
