@@ -16,6 +16,12 @@ Built as part of a data structures and algorithms coursework project.
     - Automatic rehashing and resizing
 - CLI-based interaction
 
+## Dependencies
+
+- C++17 or later
+- CMake 3.30+
+- CLion (recommended)
+- IMDb Dataset – [title.basics.tsv.gz](https://datasets.imdbws.com/title.basics.tsv.gz)
 ## Setup 
 
 **We used CLion to make and run this project so we advise to open the project from version control before following the instructions.**
@@ -30,3 +36,4 @@ if you are getting this error when trying to insert from the file:
 ```Error: Cannot open file data/title.basics.tsv```
 Make sure that the default workspace is set correctly for the makefile to read this file: 
 - go to Run > Edit Configurations > HashTableCLI >> Working Directory > ```\set to your project directory\```
+
