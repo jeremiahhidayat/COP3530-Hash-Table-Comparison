@@ -2,7 +2,7 @@
 // Created by jerem on 11/2/2025.
 //
 
-#include "../include/parser.h"
+#include "parser.h"
 #include <fstream>
 #include <sstream>
 #include <iostream>
