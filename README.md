@@ -18,9 +18,15 @@ Built as part of a data structures and algorithms coursework project.
 
 ## Setup 
 
-To get the database file for IMDb, visit this [link](https://datasets.imdbws.com/title.basics.tsv.gz).
-Extract the file and put the `title.basics.tsv` file in the [data directory](data).
+**We used CLion to make and run this project so we advise to open the project from version control before following the instructions.**
 
+### Steps to run the project
+- Open the project in CLion by opening from version control.
+- go to Run > Edit Configurations > HashTableCLI >> Working Directory > ```\set to your project directory\```
+- To get the database file for IMDb, visit this [link](https://datasets.imdbws.com/title.basics.tsv.gz).
+- Extract the file and put the `title.basics.tsv` file in the [data directory](data).
+
+if you are getting this error when trying to insert from the file:
+```Error: Cannot open file data/title.basics.tsv```
 Make sure that the default workspace is set correctly for the makefile to read this file: 
-
-in Clion: Run > Edit Configurations > Working Directory > set to your project root.
+- go to Run > Edit Configurations > HashTableCLI >> Working Directory > ```\set to your project directory\```
