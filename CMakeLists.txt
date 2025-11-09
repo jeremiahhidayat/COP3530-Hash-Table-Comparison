@@ -1,11 +1,21 @@
 cmake_minimum_required(VERSION 3.30)
-project(Project2_Part_2)
+project(${CMAKE_PROJECT_NAME} LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 
-include_directories(include)
+include_directories(${PROJECT_SOURCE_DIR}/include)
 
-add_executable(Project2_Part_2
+file(GLOB_RECURSE PROJECT_SOURCES
+        ${PROJECT_SOURCE_DIR}/src/*.cpp
+        ${PROJECT_SOURCE_DIR}/include/*.h
+)
+
+file(GLOB_RECURSE PROJECT_SOURCES
+        ${PROJECT_SOURCE_DIR}/src/*.cpp
+        ${PROJECT_SOURCE_DIR}/include/*.h
+)
+
+add_executable(HashTableCLI
     include/CLI.h
     include/hashOpenAddress.h
     include/hashSeparateAddress.h
@@ -13,4 +23,6 @@ add_executable(Project2_Part_2
     include/parser.h
     src/CLI.cpp
     src/main.cpp
-    src/parser.cpp)
+    src/parser.cpp
+    )
+
